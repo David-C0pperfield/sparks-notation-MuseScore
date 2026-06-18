@@ -50,6 +50,10 @@ export default {
 		return await ipcRenderer.invoke('saveBinary', path, content)
 	},
 	/**
+	 * 打开并解压MuseScore工程文件
+	 */
+	openMuseScoreFile: (path: string) => ipcRenderer.invoke('openMuseScoreFile', path),
+	/**
 	 * 获取临时目录
 	 */
 	getTempPath: async (): Promise<string> => {
