@@ -159,10 +159,20 @@ function AppIn() {
 		callRef(editorApiRef, async api => {
 			if (await dirtyConfirm()) {
 				const data = await window.FileSystem.browseOpenText(LNG('browse.open'), fileFiltersOpen)
-				if (undefined === data) {
-					return
+				if (undefined === data) return
+
+				const filePath = data.path
+				const ext = window.Path.extname(filePath).toLowerCase() // 检查文件后缀
+				let content = data.content
+				// 处理MuseScore文件，若为musz则解压
+				if (ext === '.mscz'){
+					const result = await window.FileSystem.openMuseScoreFile(filePath)
+					if (!result){
+						showToast(`mscz文件解压失败`)
+						return
+					}
+					else content = result
 				}
-				const content = data.content
 				if (content === undefined) {
 					showToast(LNG('toast.open_fail', window.Path.basename(data.path)))
 					return
