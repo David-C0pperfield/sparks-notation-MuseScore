@@ -29,7 +29,8 @@
     "react-icons": "^5.3.0",
     "react-jss": "^10.10.0",
     "tone": "15.0.4",
-    "use-immer": "^0.10.0"
+    "use-immer": "^0.10.0",
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.5.0",
@@ -44,6 +45,7 @@
     "@sparks-notation/core": "workspace:^",
     "@sparks-notation/react-editor": "workspace:^",
     "@sparks-notation/util": "workspace:^",
+    "@types/xml2js": "^0.4.14",
     "@vitejs/plugin-react-swc": "^3.7.1",
     "electron": "^34.2.0",
     "electron-vite": "^3.0.0",
