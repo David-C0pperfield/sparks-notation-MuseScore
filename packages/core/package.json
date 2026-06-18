@@ -7,7 +7,13 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@sparks-notation/util": "workspace:^",
+    "@types/adm-zip": "^0.5.8",
     "@types/jquery": "^3.5.32",
+    "@types/xml2js": "^0.4.14",
     "jquery": "^3.7.1"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.17",
+    "xml2js": "^0.6.2"
   }
 }
