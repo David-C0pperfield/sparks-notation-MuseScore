@@ -4,6 +4,7 @@ import path from "path";
 import { DataStore } from "../../common/dataStore";
 import { PrefStorage } from "../../common/prefs/PrefBackend";
 import child_process from 'node:child_process'
+import AdmZip from 'adm-zip'
 
 export module EventFileSystem {
 	export function register(win: BrowserWindow, settingsPref: PrefStorage) {
@@ -15,7 +16,7 @@ export module EventFileSystem {
 		ipcMain.handle('openHtml', async (evt, path: string) => {
 			const url = 'file://' + path.replace(/\\/g, '/')
 			const preferredBrowser = settingsPref.getValue('string', 'browser', '')
-			if(preferredBrowser == '') {
+			if (preferredBrowser == '') {
 				await shell.openExternal(url)
 				return true
 			} else {
@@ -33,14 +34,14 @@ export module EventFileSystem {
 				filters: filters,
 				properties: ['openFile']
 			})
-			if(result.canceled) {
+			if (result.canceled) {
 				return undefined
 			}
 			const path = result.filePaths[0]
 			try {
 				const content = (await fs.promises.readFile(path)).toString()
 				return { path, content }
-			} catch(err) {
+			} catch (err) {
 				return { path, content: undefined }
 			}
 		})
@@ -52,7 +53,7 @@ export module EventFileSystem {
 				properties: ['showOverwriteConfirmation']
 			})
 			const path = result.filePath
-			if(path == '') {
+			if (path == '') {
 				return undefined
 			}
 			return path
@@ -62,7 +63,7 @@ export module EventFileSystem {
 			try {
 				const content = (await fs.promises.readFile(path)).toString()
 				return { path, content }
-			} catch(err) {
+			} catch (err) {
 				return { path, content: undefined }
 			}
 		})
@@ -71,7 +72,7 @@ export module EventFileSystem {
 			try {
 				await fs.promises.writeFile(path, content)
 				return true
-			} catch(err) {
+			} catch (err) {
 				return false
 			}
 		})
@@ -80,7 +81,22 @@ export module EventFileSystem {
 			try {
 				await fs.promises.writeFile(path, content)
 				return true
-			} catch(err) {
+			} catch (err) {
+				return false
+			}
+		})
+		// 打开MuseScore工程
+		ipcMain.handle('openMuseScoreFile', async (evt, filePath: string) => {
+			try {
+				const zip = new AdmZip(filePath)
+				// 查找mscz包中的mscx文件
+				const mscxFile = zip.getEntries().find(entry =>
+					!entry.isDirectory && entry.entryName.toLowerCase().endsWith('.mscx')
+				)
+				if (!mscxFile) throw new Error('No .mscx file found in the archive.')
+				const content = mscxFile.getData().toString('utf-8')
+				return content
+			} catch (err) {
 				return false
 			}
 		})
@@ -88,8 +104,8 @@ export module EventFileSystem {
 		ipcMain.handle('getTempPath', async (evt) => {
 			const dataPath = DataStore.getDataPath()
 			const tempPath = path.join(dataPath, 'temp')
-			if(!fs.existsSync(tempPath)) {
-				await fs.promises.mkdir(tempPath, {recursive: true})
+			if (!fs.existsSync(tempPath)) {
+				await fs.promises.mkdir(tempPath, { recursive: true })
 			}
 			return tempPath
 		})
@@ -103,7 +119,7 @@ export module EventFileSystem {
 			const resPath = app.getAppPath()
 			const basename = path.basename(resPath)
 			const dirname = path.dirname(resPath)
-			if(basename == 'app.asar') {
+			if (basename == 'app.asar') {
 				evt.returnValue = path.join(dirname, 'app.asar.unpacked')
 			} else {
 				evt.returnValue = resPath
