@@ -112,6 +112,7 @@ function AppIn() {
 
 	const fileFiltersOpen: Electron.FileFilter[] = useMemo(() => [
 		{ name: LNG('browse.format.spnmn'), extensions: ['spnmn', 'spnmn.txt'] },
+		{ name: LNG('browse.format.mscz'), extensions: ['mscz'] },
 		{ name: LNG('browse.format.all'), extensions: ['*'] }
 	], [LNG])
 	const fileFiltersSave: Electron.FileFilter[] = useMemo(() => [

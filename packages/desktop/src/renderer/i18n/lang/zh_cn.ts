@@ -24,7 +24,7 @@ Rp: page=A4 font_lyrics=Roman,CommonSerif/600/0.95
 ===
 N: (13)(24)(35)(46) | (57)(61e)(72e)(1e6) | (75)(64)(53)(42) | (31)(27d) 1 - |||
 `,
-	
+
 	// 应用栏按钮
 	"navbar.button": {
 		"new": "新建",
@@ -44,6 +44,8 @@ N: (13)(24)(35)(46) | (57)(61e)(72e)(1e6) | (75)(64)(53)(42) | (31)(27d) 1 - |||
 		"format": {
 			"spnmn": "Sparks NMN 乐谱",
 			"spnmn_txt": "Sparks NMN 文本",
+			"musz": "MuseScore工程",
+			"musx": "MuseScore未压缩工程",
 			"all": "所有文件",
 			"ogg": "Ogg Vorbis"
 		}
